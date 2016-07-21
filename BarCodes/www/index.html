@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<!--
+Copyright (c) Microsoft. All rights reserved.  Licensed under the MIT license. See LICENSE file in the project root for full license information.
+-->
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: http://youraddress.azurewebsites.net http://dev.virtualearth.net https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+	<title>BarCodes</title>
+
+	<link href="css/index.css" rel="stylesheet" />
+</head>
+<body ng-app="xPlat">
+	<section id="barCodesapp" ng-controller="BarCodesCtrl as barCodesCtrl">
+		<header id="header">
+			<div id="headerBand"></div>
+            <table cellpadding="0px" cellspacing="0px" height="45px">
+                <tr>
+                    <td style="width:55px;">
+                    </td>
+                    <td style="font-size:8px; padding-right:5px;">
+                            ProdID:
+                    </td>
+                    <td>
+                        <input style="font-style:italic" id="new-productcode" placeholder="enter product code" ng-model="barCodesCtrl.newPrductCodesText" autofocus>
+                        <div style="display: none">
+                            <input style="font-style:italic" id="new-barcode" placeholder="enter barcode" td-text-change="barCodesCtrl.addBarCodes()" ng-model="barCodesCtrl.newBarCodesText">
+                        </div>
+                    </td>
+                    <td style="padding-left:10px; padding-right:10px">
+                        <button ng-click="barCodesCtrl.scanBarCodesText()" >Scan Barcode</button> 
+                    </td>
+                </tr>
+            </table>
+</header>
+		<section id="main">
+			<div id="barCodes-list">
+				<div class="templateWrapper" ng-repeat="barCodesItem in barCodesCtrl.barCodess">
+					<div class="templateContainer">
+                        <table>
+                            <tr>
+                                <td align="right">
+                                    ProductID:
+                                </td>
+                                <td>
+                                    <input class="templateTitle" ng-class="{crossedOut: barCodesItem.done}" type="text" td-text-change="barCodesCtrl.changeBarCodesText(barCodesItem)" ng-model="barCodesItem.text" />
+                                    <button class="templateLeft templateToggle" ng-class="{'checked': barCodesItem.done, 'unchecked': !barCodesItem.done}" ng-mousedown="barCodesCtrl.toggleBarCodesDone(barCodesItem)"></button>
+                                    <button class="templateLeft templateRemove" ng-click="barCodesCtrl.removeBarCodes(barCodesItem, $index)"></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top" style="font-size:11px">
+                                    BarCode:
+                                </td>
+                                <td>
+                                    <h3 class="templateBarCode">{{barCodesItem.barcode}}</h3>
+                                </td>
+                            </tr>
+                        </table>
+					</div>
+					<div class="templateBorder"></div>
+				</div>
+			</div>
+		</section>
+	</section>
+    <span style="display:inline-block; font-style:italic; font-size:8px;">
+        &nbsp;&nbsp;&nbsp;GitHub Location:https://github.com/kipj1/BarCodes
+    </span>
+
+	<!-- Cordova reference, this is added to your app when it's built. -->
+	<script src="cordova.js"></script>
+	<script src="scripts/platformOverrides.js"></script>
+
+    <!--azure mobile services script-->
+    <script src='scripts/MobileServices.Web.js'></script>
+
+	<!-- Angular JS -->
+	<script src="scripts/frameworks/angular.min.js"></script>
+	<script src="scripts/frameworks/angular-resource.min.js"></script>
+
+	<!-- Initialize all the modules -->
+	<script src="scripts/index.js"></script>
+	
+	<!-- Services -->
+	<script src="scripts/services/azureStorage.js"></script>
+	<script src="scripts/services/localStorage.js"></script>
+	<script src="scripts/services/storage.js"></script>
+	<script src="scripts/services/guidGenerator.js"></script>
+	<script src="scripts/services/maps.js"></script>
+	<script src="scripts/services/cordova.js"></script>
+
+	<!-- Directives -->
+	<script src="scripts/directives/textChange.js"></script>
+
+	<!-- Controllers -->
+	<script src="scripts/controllers/barCodesCtrl.js"></script>
+</body>
+</html>
