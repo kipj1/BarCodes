@@ -9,14 +9,6 @@
         // Handle the Cordova pause and resume events
         document.addEventListener( 'pause', onPause.bind( this ), false );
         document.addEventListener( 'resume', onResume.bind( this ), false );
-
-        //document.addEventListener('deviceready', function () {
-        //    angular.bootstrap(document, ['Your App Name']);
-
-            //var elem = document.getElementById('xPlat');
-            //angular.bootstrap(elem, ["xPlat"]);
-
-        //}, false);
     };
 
     function onPause() {

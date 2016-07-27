@@ -17,6 +17,7 @@
 	    this.storage = storage;
 	    var that = this;
 
+        //---Get all barCodes
 	    storage.getAll().then(function (items) {
 	        that.barCodess = items;
             // Refresh on another thread.
@@ -29,11 +30,11 @@
 	        var _this = this;
 
 	        return this.maps.getCurrentPosition()
-                .then(_this.maps.getAddressFromPosition.bind(_this.maps), function (error) { return error.message; })
                 .then(function (barcode) {
-                    //barCodesItem.address = barcode;
+                    //---Update internal starage with barCodesItem---
                     return _this.storage.update(barCodesItem);
                 }, function (errorMessage) {
+                    //--Error happened so pass back error in barcode property---
                     barCodesItem.barcode = errorMessage;
                     return _this.storage.update(barCodesItem);
                 });
@@ -68,16 +69,18 @@
 			.then
             (
                 function (barCodes) {
-
+                    //---Get screen elements--
                     var productcode = document.getElementById("new-productcode");
                     var barcode = document.getElementById("new-barcode");
 
-                barCodes.text = productcode.value;
-                barCodes.barcode = barcode.value;
-                productcode.value = "";
+                    //---Set screen element values into barCodes object--
+                    barCodes.text = productcode.value;
+                    barCodes.barcode = barcode.value;
+                    productcode.value = "";
 
-			    _this.barCodess.push(barCodes);
-			    return barCodes;
+                    //---Save/Push barCodes object to stack memory---
+			        _this.barCodess.push(barCodes);
+			        return barCodes;
                 }
             )
             .then
@@ -94,15 +97,21 @@
 	    var _this = this;
 	    cordova.plugins.barcodeScanner.scan(
            function (result) {
+               //----Good result came back from barcode scan--
+
+               //==================Test Code=======================
                //$("#new-barcode").val(result.text);
                //alert("We got a barcode\n" +
                //      "Result: " + result.text + "\n" +
                //      "Format: " + result.format + "\n" +
                //      "Cancelled: " + result.cancelled);
 
+               //---Get "new-barcode" element--
                var barcode = document.getElementById("new-barcode");
+               //---Set barcode value on screen--
                barcode.value = result.text;
                var event = new Event('change');
+               //---Fire change event back to new-barcode element to let it know we are done scanning a new barcode asynchronously IMPORTANT!!
                if ('fireEvent' in barcode) {
                    barcode.fireEvent("onchange");
                    barcode.fireEvent("onchange");
@@ -115,6 +124,7 @@
                }
            },
            function (error) {
+               //----Bad result came back from barcode scan--
                alert("Scanning failed: " + error);
            },
            {
